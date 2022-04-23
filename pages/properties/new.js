@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 import Layout from '../../components/Layout';
-import {Form,Button,Input} from 'semantic-ui-react';
+import {Form,Button,Input,Message} from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
 import web3 from '../../ethereum/web3';
-
+import{Link,Router} from '../../routes';
 class PropertyNew extends Component
 {
     state={
@@ -13,15 +13,24 @@ class PropertyNew extends Component
         securityAmount:'',
         monthlyRent:'',
         lateCharge:'',
+        errorMessage:'',
+        loading:false,
     };
 
     onSubmit= async (event)=>{
         event.preventDefault();
 
-        const accounts= await web3.eth.getAccounts();
+
+        this.setState({loading:true,errorMessage:''});
+        try{
+            const accounts= await web3.eth.getAccounts();
         await factory.methods.createRent(this.state.securityAmount,this.state.pHeader,this.state.pDesc,this.state.pLoc,this.state.monthlyRent,this.state.lateCharge).send({
             from: accounts[0]
         });
+        }catch(err){
+            this.setState({errorMessage:err.message})
+        }
+        this.setState({loading:false});
     };
 
     render()
@@ -29,7 +38,7 @@ class PropertyNew extends Component
         return (
         <Layout >
         <h1 style={{color:'white',marginLeft:"10%"}}>Enter the following details</h1>
-        <Form onSubmit={this.onSubmit} style={{marginLeft:"10%",marginRight:"10%"}}>
+        <Form error={!!this.state.errorMessage} onSubmit={this.onSubmit} style={{marginLeft:"10%",marginRight:"10%"}}>
             <Form.Field>
                 <label style={{color:'white'}}>Property Header</label>
                 <Input
@@ -72,7 +81,8 @@ class PropertyNew extends Component
                     onChange={event=>this.setState({lateCharge:event.target.value})}
                 />
             </Form.Field>
-            <Button positive>List</Button>
+            <Message error header="Something went wrong" content={this.state.errorMessage}/>
+            <Button loading={this.state.loading} positive>List</Button>
         </Form>
         </Layout>
         );
