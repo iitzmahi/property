@@ -34,6 +34,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/properties/new.js"
+    ],
+    "/properties/show": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/properties/show.js"
     ]
   },
   "ampFirstPages": []

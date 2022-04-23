@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import {Form,Button,Input,Message} from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
 import web3 from '../../ethereum/web3';
-import{Link,Router} from '../../routes';
+import{Router} from '../../routes';
 class PropertyNew extends Component
 {
     state={
@@ -27,6 +27,7 @@ class PropertyNew extends Component
         await factory.methods.createRent(this.state.securityAmount,this.state.pHeader,this.state.pDesc,this.state.pLoc,this.state.monthlyRent,this.state.lateCharge).send({
             from: accounts[0]
         });
+        Router.pushRoute('/');
         }catch(err){
             this.setState({errorMessage:err.message})
         }

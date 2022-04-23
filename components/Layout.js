@@ -3,7 +3,7 @@ import { Container,Header,Icon,Statistic } from 'semantic-ui-react';
 import Head from 'next/head';
 export default(props)=>{
     return(
-        <Container style={{backgroundColor:'black',width:'100%',height:'1000px'}}>
+        <Container style={{backgroundColor:'black',width:'100%',height:'5000px'}}>
             <Head>
             <link
           rel="stylesheet"
