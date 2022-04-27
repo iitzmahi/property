@@ -71,7 +71,10 @@ class RentIndex extends Component {
             <Layout>
                 <div>
                     <br/>
-                    <h3>Properties listed</h3>
+                    <Link route="/viewProperty/showProperty">
+                    <Button positive style={{marginLeft:'20.5%'}} content='View Your Listed/Rented Properties'></Button>
+                    </Link>
+                    <h1 style={{color:'cyan',marginLeft:'20.5%',marginBottom:'20px'}}>Listed Properties</h1>
 
                     <Link route="/properties/new">
                         <Button floated="right" content="Post your property" icon="add circle" color="red" style={{marginRight:'10%'}}/>

@@ -32,6 +32,14 @@ contract FactoryRent
 }
 contract Rent
 {
+    struct MonthlyRent {
+        string startDate;
+        string endDate;
+        uint paid;
+        uint lateCharges;
+        uint timestamp;
+        string dateOfPayment;
+    }
     address public manager; // who deployed this contract
     string name;    // property type name
     string propertyLocation; // Location of the property
@@ -46,9 +54,9 @@ contract Rent
     address[] public pastRenters;// list of people who rented this property
     uint public lateRentCharges;
     int public rating;//rating of the particular property initially set -1;
+    MonthlyRent[] public monthlyRents;
+    uint public endDate;
     // restrict permissions only manager can access
-    uint public lastPayDate;
-    uint public contractDate;
     modifier restricted() {
     require(msg.sender == manager);
     _;
@@ -67,8 +75,7 @@ contract Rent
         securityRequest = false;
         lateRentCharges = _lateRentCharges;
         recurringDate = 0;
-        lastPayDate = 0;
-        contractDate = now;
+        endDate = 0;
     }
     //method used to take initial security amount from the property owner
     function payInitialAmount() public restricted payable
@@ -85,7 +92,7 @@ contract Rent
         availability = 0;
         recurringDate = currentDate;
     }
-    function payRent(uint numDays,uint date) public payable
+    function payRent(uint numDays,uint index,string paymentDate) public payable
     {
         uint lateCharges = numDays*lateRentCharges;
         require(msg.value >= rentPerMonth);
@@ -94,7 +101,10 @@ contract Rent
         require(lesseeSecurity >= lateCharges);
         manager.transfer(msg.value+lateCharges);
         lesseeSecurity -= lateCharges;
-        lastPayDate = date;
+        MonthlyRent storage mr = monthlyRents[index];
+        mr.paid = 1;
+        mr.lateCharges = lateCharges;
+        mr.dateOfPayment = paymentDate;
     }
     // manager can edit details regarding the property
     function editDetails(string newname,uint newsecurity,string newDescription,uint newRentPerMonth) public restricted
@@ -131,11 +141,28 @@ contract Rent
             return pastRenters[len-1];
         }
     }
+    function getMonthlyRentsSize() public view returns(uint)
+    {
+        return monthlyRents.length;
+    }
     function takeOnMaintenance() public restricted
     {
         require(availability == 1);
         availability = -1;
         msg.sender.transfer(this.balance);
+    }
+    function askForRent(string _startDate,string _endDate,uint startDateInSecs,uint endDateInSecs) public restricted
+    {
+        MonthlyRent memory newMonthlyRent = MonthlyRent({
+            startDate: _startDate,
+            endDate: _endDate,
+            paid: 0,
+            lateCharges:0,
+            timestamp: startDateInSecs,
+            dateOfPayment: ""
+        });
+        monthlyRents.push(newMonthlyRent);
+        endDate = endDateInSecs;
     }
     // to get all details about contract
     function RentSummary() public view returns (address, uint, int, string, int, uint,string,uint,string) 

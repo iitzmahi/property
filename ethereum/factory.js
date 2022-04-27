@@ -3,7 +3,7 @@ import FactoryRent from './build/FactoryRent.json';
 
 const instance = new web3.eth.Contract(
     JSON.parse(FactoryRent.interface),
-    '0xc2666344f9357eF2fEcF912751e212cD7d3A206f'
+    '0xEE9C27f1b0759Afaf35E9c5eBb6550Afc33112DC'
 );
 
 export default instance;
