@@ -7,7 +7,7 @@ class RentShowProperty extends Component
     render() {
         return (
             <Layout>
-                <div style={{marginLeft:'34.5%'}} class="ui cards">
+                <div style={{marginLeft:'26.5%',marginTop:'100px'}} class="ui cards">
   <div class="card">
     <div class="content">
       <div class="header" style={{color:'red'}}>Listed Properties</div>
@@ -26,6 +26,16 @@ class RentShowProperty extends Component
       </div>
     </div>
     <Button> <i class="search icon"></i></Button>
+  </div>
+  <div class="card">
+    <div class="content">
+      <div class="header" style={{color:'red'}}>Search Properties</div>
+      <div class="description" style={{color:'black'}}>
+        Click on the button below to view the properties that are available for you to take on leese
+      </div>
+    </div>
+    <Link route="/">
+    <Button> <i class="search icon"></i></Button></Link>
   </div>
 </div>
             </Layout>

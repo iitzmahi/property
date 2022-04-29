@@ -56,7 +56,7 @@ class RentShowListed extends Component
     render()
     {
         return(<Layout>
-            <h1>hello</h1>
+            <h1 style={{color:"cyan",marginLeft:"20.5%",marginBottom:"2%"}}>This are your listed properties:</h1>
             {this.renderRentContracts()}
         </Layout>);
     }
